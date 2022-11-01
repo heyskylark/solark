@@ -108,6 +108,7 @@ abstract contract ERC721 {
     transferFrom(_from, _to, _tokenId);
 
     if (
+      _to.code.length != 0 &&
       ERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, data) !=
       ERC721TokenReceiver.onERC721Received.selector
     ) revert UnsafeRecipient();
@@ -117,6 +118,7 @@ abstract contract ERC721 {
     transferFrom(_from, _to, _tokenId);
 
     if (
+      _to.code.length != 0 &&
       ERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, "") !=
       ERC721TokenReceiver.onERC721Received.selector
     ) revert UnsafeRecipient();
@@ -178,6 +180,7 @@ abstract contract ERC721 {
     _mint(_to, _tokenId);
 
     if (
+      _to.code.length != 0 &&
       ERC721TokenReceiver(_to).onERC721Received(msg.sender, address(0), _tokenId, "") !=
       ERC721TokenReceiver.onERC721Received.selector
     ) revert UnsafeRecipient();
@@ -191,6 +194,7 @@ abstract contract ERC721 {
     _mint(_to, _tokenId);
     
     if (
+      _to.code.length != 0 &&
       ERC721TokenReceiver(_to).onERC721Received(msg.sender, address(0), _tokenId, data) !=
       ERC721TokenReceiver.onERC721Received.selector
     ) revert UnsafeRecipient();

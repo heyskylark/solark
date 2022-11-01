@@ -17,7 +17,7 @@ contract MockERC721 is ERC721 {
   }
 
   function safeMint(address to, uint256 tokenId) public virtual {
-    safeMint(to, tokenId);
+    _safeMint(to, tokenId);
   }
 
   function safeMint(
@@ -25,6 +25,6 @@ contract MockERC721 is ERC721 {
     uint256 tokenId,
     bytes memory data
   ) public virtual {
-    safeMint(to, tokenId, data);
+    _safeMint(to, tokenId, data);
   }
 }
