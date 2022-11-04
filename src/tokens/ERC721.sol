@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-pragma solidity ^0.8.13;
+pragma solidity >=0.8.0;
 
 // @notice An implmentation of ERC-721 according to the EIP-721 specifications.
 // @author Solark (https://github.com/heyskylark/solark/blob/main/src/tokens/ERC721.sol)
