@@ -29,23 +29,13 @@ contract ERC721Recipient is ERC721TokenReceiver {
 }
 
 contract RevertingERC721Recipient is ERC721TokenReceiver {
-  function onERC721Received(
-    address,
-    address,
-    uint256,
-    bytes calldata
-  ) public virtual override returns (bytes4) {
+  function onERC721Received(address, address, uint256, bytes calldata) public virtual override returns (bytes4) {
     revert(string(abi.encodePacked(ERC721TokenReceiver.onERC721Received.selector)));
   }
 }
 
 contract WrongReturnDataERC721Recipient is ERC721TokenReceiver {
-  function onERC721Received(
-    address,
-    address,
-    uint256,
-    bytes calldata
-  ) public virtual override returns (bytes4) {
+  function onERC721Received(address, address, uint256, bytes calldata) public virtual override returns (bytes4) {
     return 0xCAFEBEEF;
   }
 }
@@ -375,7 +365,7 @@ contract ERC721Test is TestPlus {
     token.mint(address(this), 1337);
 
     token.safeTransferFrom(address(this), address(new NonERC721Recipient()), 1337, "transfer for deez");
-  } 
+  }
 
   function testFailSafeTransferFromRevertingERC721Recipient() public {
     token.mint(address(this), 1337);
@@ -732,12 +722,7 @@ contract ERC721Test is TestPlus {
     token.transferFrom(address(owner), address(to), id);
   }
 
-  function testFailTransferFromWrongAddress(
-    address owner,
-    address from,
-    address to,
-    uint256 id
-  ) public {
+  function testFailTransferFromWrongAddress(address owner, address from, address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
     if (from == address(0)) from = address(0xCAFE);
     if (owner == address(0)) owner = address(0xBA11);
@@ -760,11 +745,7 @@ contract ERC721Test is TestPlus {
     token.transferFrom(address(0), address(0xBA11), id);
   }
 
-  function testFailTransferFromNotOwner(
-    address owner,
-    address to,
-    uint256 id
-  ) public {
+  function testFailTransferFromNotOwner(address owner, address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
     if (owner == address(0)) owner = address(0xBA11);
     if (owner == to) revert();
@@ -785,7 +766,7 @@ contract ERC721Test is TestPlus {
     token.mint(address(this), id);
 
     token.safeTransferFrom(address(this), address(new NonERC721Recipient()), id, data);
-  } 
+  }
 
   function testFailSafeTransferFromRevertingERC721Recipient(uint256 id) public {
     token.mint(address(this), id);
@@ -805,7 +786,10 @@ contract ERC721Test is TestPlus {
     token.safeTransferFrom(address(this), address(new WrongReturnDataERC721Recipient()), id);
   }
 
-  function testFailSafeTransferFromToERC721RecipientWithWrongReturnDataWithData(uint256 id, bytes calldata data) public {
+  function testFailSafeTransferFromToERC721RecipientWithWrongReturnDataWithData(
+    uint256 id,
+    bytes calldata data
+  ) public {
     token.mint(address(this), id);
 
     token.safeTransferFrom(address(this), address(new WrongReturnDataERC721Recipient()), id, data);

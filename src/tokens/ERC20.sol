@@ -27,7 +27,7 @@ abstract contract ERC20 {
   //////////////////////////////////////////////*/
 
   string public name;
-  
+
   string public symbol;
 
   uint8 public immutable decimals;
@@ -56,11 +56,7 @@ abstract contract ERC20 {
                     CONSTRUCTOR
   //////////////////////////////////////////////*/
 
-  constructor(
-    string memory _name,
-    string memory _symbol,
-    uint8 _decimals
-  ) {
+  constructor(string memory _name, string memory _symbol, uint8 _decimals) {
     name = _name;
     symbol = _symbol;
     decimals = _decimals;
@@ -89,7 +85,7 @@ abstract contract ERC20 {
     unchecked {
       address recoveredAddress = ecrecover(
         keccak256(
-          abi.encode(
+          abi.encodePacked(
             "\x19\x01",
             DOMAIN_SEPARATOR(),
             keccak256(
@@ -124,15 +120,16 @@ abstract contract ERC20 {
   }
 
   function computeDomainSeperator() public view virtual returns (bytes32) {
-    return keccak256(
-      abi.encode(
-        keccak256('EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'),
-        keccak256(bytes(name)),
-        keccak256("1"),
-        block.chainid,
-        address(this)
-      )
-    );
+    return
+      keccak256(
+        abi.encode(
+          keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+          keccak256(bytes(name)),
+          keccak256("1"),
+          block.chainid,
+          address(this)
+        )
+      );
   }
 
   /*//////////////////////////////////////////////
@@ -181,7 +178,7 @@ abstract contract ERC20 {
               INTERNAL MING/BURN LOGIC
   //////////////////////////////////////////////*/
 
-  function mint(address to, uint256 value) internal virtual {
+  function _mint(address to, uint256 value) internal virtual {
     totalSupply += value;
 
     unchecked {
@@ -191,7 +188,7 @@ abstract contract ERC20 {
     emit Transfer(address(0), to, value);
   }
 
-  function burn(address from, uint256 value) internal virtual {
+  function _burn(address from, uint256 value) internal virtual {
     balanceOf[from] -= value;
 
     unchecked {
