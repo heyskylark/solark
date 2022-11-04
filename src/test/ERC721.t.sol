@@ -468,7 +468,7 @@ contract ERC721Test is TestPlus {
   }
 
   function testApprove(address to, uint256 id) public {
-    if (to == address(0)) to = address(0x1337);
+    if (to == address(0) || to == address(this)) to = address(0x1337);
 
     token.mint(address(this), id);
 
@@ -480,7 +480,7 @@ contract ERC721Test is TestPlus {
   }
 
   function testApproveAndBurn(address to, uint256 id) public {
-    if (to == address(0)) to = address(0x1337);
+    if (to == address(0) || to == address(this)) to = address(0x1337);
 
     token.mint(address(this), id);
 
@@ -496,7 +496,7 @@ contract ERC721Test is TestPlus {
   }
 
   function testApproveAll(address to) public {
-    if (to == address(0)) to = address(0x1337);
+    if (to == address(0) || to == address(this)) to = address(0x1337);
 
     vm.expectEmit(true, true, false, false);
     emit ApprovalForAll(address(this), address(to), true);
@@ -507,7 +507,7 @@ contract ERC721Test is TestPlus {
 
   function testTransferFrom(address to, uint256 id) public {
     address from = address(0xBA11);
-    if (to == address(0)) to = address(0x1337);
+    if (to == address(0) || to == from) to = address(0x1337);
 
     token.mint(from, id);
 
@@ -526,7 +526,7 @@ contract ERC721Test is TestPlus {
 
   function testTransferFromSelf(address to, uint256 id) public {
     address from = address(0xBA11);
-    if (to == address(0)) to = address(0x1337);
+    if (to == address(0) || to == from) to = address(0x1337);
 
     token.mint(from, id);
 
@@ -543,7 +543,7 @@ contract ERC721Test is TestPlus {
 
   function testTransferFromApproveAll(address to, uint256 id) public {
     address from = address(0xBA11);
-    if (to == address(0)) to = address(0x1337);
+    if (to == address(0) || to == from) to = address(0x1337);
 
     token.mint(from, id);
 
@@ -562,7 +562,9 @@ contract ERC721Test is TestPlus {
 
   function testSafeTransferFromApproveAll(address to, uint256 id) public {
     address from = address(0xBA11);
-    if (to == address(0)) to = address(0x1337);
+    if (to == address(0) || to == from) to = address(0x1337);
+
+    if (uint256(uint160(to)) <= 18 || to.code.length > 0) return;
 
     token.mint(from, id);
 
@@ -629,6 +631,8 @@ contract ERC721Test is TestPlus {
 
   function testSafeMintToEOA(address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
+
+    if (uint256(uint160(to)) <= 18 || to.code.length > 0) return;
 
     vm.expectEmit(true, true, true, false);
     emit Transfer(address(0), address(to), id);
@@ -702,8 +706,7 @@ contract ERC721Test is TestPlus {
 
   function testFailUnauthroizedApprove(address owner, address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
-    if (owner == address(0)) owner = address(0xBA11);
-    if (owner == to) revert();
+    if (owner == address(0) || owner == to) owner = address(0xBA11);
 
     token.mint(address(owner), id);
 
@@ -713,8 +716,7 @@ contract ERC721Test is TestPlus {
 
   function testFailUnownedTransferFrom(address owner, address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
-    if (owner == address(0)) owner = address(0xBA11);
-    if (owner == to) revert();
+    if (owner == address(0) || owner == to) owner = address(0xBA11);
 
     token.mint(address(owner), 1337);
 
@@ -724,9 +726,8 @@ contract ERC721Test is TestPlus {
 
   function testFailTransferFromWrongAddress(address owner, address from, address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
-    if (from == address(0)) from = address(0xCAFE);
-    if (owner == address(0)) owner = address(0xBA11);
-    if (from == owner) revert();
+    if (from == address(0) || from == to) from = address(0xCAFE);
+    if (owner == address(0) || owner == from) owner = address(0xBA11);
 
     token.mint(address(owner), id);
 
@@ -736,8 +737,7 @@ contract ERC721Test is TestPlus {
 
   function testFailTransferFromZero(address owner, address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
-    if (owner == address(0)) owner = address(0xBA11);
-    if (owner == to) revert();
+    if (owner == address(0) || owner == to) owner = address(0xBA11);
 
     token.mint(address(owner), id);
 
@@ -747,8 +747,7 @@ contract ERC721Test is TestPlus {
 
   function testFailTransferFromNotOwner(address owner, address to, uint256 id) public {
     if (to == address(0)) to = address(0x1337);
-    if (owner == address(0)) owner = address(0xBA11);
-    if (owner == to) revert();
+    if (owner == address(0) || owner == to) owner = address(0xBA11);
 
     token.mint(address(owner), id);
 
