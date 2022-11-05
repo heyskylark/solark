@@ -1,3 +1,4 @@
+ERC1155Test:testMintToEOA() (gas: 34630)
 ERC20Test:testApprove() (gas: 35739)
 ERC20Test:testBurn() (gas: 61791)
 ERC20Test:testFailBurnUnderflow() (gas: 7891)

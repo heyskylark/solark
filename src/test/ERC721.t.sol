@@ -36,7 +36,7 @@ contract RevertingERC721Recipient is ERC721TokenReceiver {
 
 contract WrongReturnDataERC721Recipient is ERC721TokenReceiver {
   function onERC721Received(address, address, uint256, bytes calldata) public virtual override returns (bytes4) {
-    return 0xCAFEBEEF;
+    return 0x13371337;
   }
 }
 

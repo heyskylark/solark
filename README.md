@@ -7,6 +7,7 @@ My implementation of standard smart contracts and smart contract building blocks
 tokens
 ├─ ERC721 - "Minimal version of ERC-721"
 ├─ ERC20 — "An implementation of ERC-20 + EIP-2612
+├─ ERC1155 - "An implementation of ERC-1155"
 ```
 ## Safety
 
