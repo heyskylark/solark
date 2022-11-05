@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity >=0.8.0;
 
-// @notice An implementation of ERC-20 according to the EIP-20 standard
-// @notice Also an implementation of the EIP-2612 permit extension standard
-// @author Solark (https://github.com/heyskylark/solark/blob/main/src/tokens/ERC20.sol)
-
+/// @notice An implementation of ERC-20 according to the EIP-20 standard
+/// @notice Also an implementation of the EIP-2612 permit extension standard
+/// @author Solark (https://github.com/heyskylark/solark/blob/main/src/tokens/ERC20.sol)
 abstract contract ERC20 {
   /*//////////////////////////////////////////////
-                      EVENTS
+                      ERRORS
   //////////////////////////////////////////////*/
 
   error ExpiredPermit();
